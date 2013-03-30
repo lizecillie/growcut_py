@@ -1,4 +1,4 @@
-from __future__ import division
+from __future__ import division  
 
 import numpy as np
 from skimage import io, img_as_float
@@ -33,9 +33,9 @@ def growcut(image, state, max_iter=500, window_size=5):
         Segmented image.  A value of zero indicates background, one foreground.
 
     """
-    image = img_as_float(image)
+    image = img_as_float(image)  # Represents image as a float
     height, width = image.shape[:2]
-    ws = (window_size - 1) // 2
+    ws = (window_size - 1) // 2  # Neighbourhood
 
     changes = 1
     n = 0
@@ -50,26 +50,26 @@ def growcut(image, state, max_iter=500, window_size=5):
 
         for j in range(width):
             for i in range(height):
-                C_p = image[i, j]
+                C_p = image[i, j]  # Set initial values
                 S_p = state[i, j]
 
                 for jj in xrange(max(0, j - ws), min(j + ws + 1, width)):
                     for ii in xrange(max(0, i - ws), min(i + ws + 1, height)):
                         # p -> current cell
                         # q -> attacker
-                        C_q = image[ii, jj]
-                        S_q = state[ii, jj]
+                        C_q = image[ii, jj]  # Set pixel value
+                        S_q = state[ii, jj]  # Set foreground/background and strangth
 
                         gc = g(C_q, C_p)
 
-                        if gc * S_q[1] > S_p[1]:
-                            state_next[i, j, 0] = S_q[0]
-                            state_next[i, j, 1] = gc * S_q[1]
+                        if gc * S_q[1] > S_p[1]:  # If attack is stronger than defend strength
+                            state_next[i, j, 0] = S_q[0]  # Update label
+                            state_next[i, j, 1] = gc * S_q[1]  # Update strength
 
                             changes += 1
                             break
 
-        state = state_next
+        state = state_next  # Current cell's state
 
     return state[:, :, 0]
 
