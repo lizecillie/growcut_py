@@ -2,7 +2,7 @@ from _growcut import growcut
 import numpy as np
 from skimage import io
 
-image = io.imread('sharkfin_small.jpg')
+image = io.imread('haai1.jpg')
 state = np.zeros((image.shape[0], image.shape[1], 2))
 
 foreground_pixels = np.array([(90, 90), (50, 90)])
